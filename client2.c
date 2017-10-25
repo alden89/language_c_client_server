@@ -75,12 +75,10 @@ int convert_to_int (const char* str)
 {
     char *p;
     int num;
-
-    errno = 0;
+    
     long conv = strtol(str, &p, 10);    
     
-    num = conv;    
-    //printf("%d\n", num);
+    num = conv;
     return num;
 }
 
