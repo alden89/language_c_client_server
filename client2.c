@@ -1,8 +1,3 @@
-// Client side C/C++ program to demonstrate Socket programming
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <netdb.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -33,7 +28,17 @@ int main(int argc, char const *argv[])
         return -1;
     }
     
-    port = convert_to_int (argv[2]);
+    char *p;
+
+    errno = 0;
+    long conv = strtol(argv[2], &p, 10);
+
+    if (errno != 0 || *p != '\0' || conv > 65535 || conv < 1) {
+        printf("\n Error : Debe pasarse como parametro un número de puerto entre 1-65535 \n");
+        return 1;
+    } else {
+        port = conv;    
+    }
     memset(&serv_addr, '0', sizeof(serv_addr));
   
     serv_addr.sin_family = AF_INET;
