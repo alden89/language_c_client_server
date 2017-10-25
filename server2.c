@@ -1,15 +1,10 @@
-// Server side C/C++ program to demonstrate Socket programming
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-#include <string.h>
-#include <sys/types.h>
 #include <time.h>
-#include <stdlib.h>
+#include <arpa/inet.h>
 
 int dayofweek(int d, int m, int y);
 int convert_to_int(const char* str);
@@ -30,17 +25,11 @@ int main(int argc, char const *argv[])
     errno = 0;
     long conv = strtol(argv[1], &p, 10);
 
-    // Check for errors: e.g., the string does not represent an integer
-    // or the integer is larger than int
     if (errno != 0 || *p != '\0' || conv > 65535 || conv < 1) {
-        // Put here the handling of the error, like exiting the program with
-        // an error message
         printf("\n Error : Debe pasarse como parametro un número de puerto entre 1-65535 \n");
         return 1;
     } else {
-        // No error
         port = conv;    
-        //printf("%d\n", port);
     }
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
