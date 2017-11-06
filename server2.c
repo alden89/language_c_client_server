@@ -17,10 +17,15 @@ int main(int argc, char const *argv[])
     char buffer[1024] = {0};
     char *dow;
     char message[100];
-    char day[2], month[2], year[4];
-    
+    char day[2], month[2], year[4];    
     char *p;
     int port;
+
+    if(argc != 2)
+    {
+        printf("\n Uso: %s <puerto>\n",argv[0]);
+        return 1;
+    }
 
     errno = 0;
     long conv = strtol(argv[1], &p, 10);
@@ -28,41 +33,39 @@ int main(int argc, char const *argv[])
     if (errno != 0 || *p != '\0' || conv > 65535 || conv < 1) {
         printf("\n Error : Debe pasarse como parametro un número de puerto entre 1-65535 \n");
         return 1;
-    } else {
+    } else 
+    {
         port = conv;    
     }
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons( port );
 
-    // Creating socket file descriptor
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
     {
         perror("socket failed");
         exit(EXIT_FAILURE);
     }
       
-    // Forcefully attaching socket to the port 8080
-    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
-                                                  &opt, sizeof(opt)))
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
     {
         perror("setsockopt");
         exit(EXIT_FAILURE);
     }
-    
-      
-    // Forcefully attaching socket to the port 8080
-    if (bind(server_fd, (struct sockaddr *)&address, 
-                                 sizeof(address))<0)
+          
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address))<0)
     {
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
+
     if (listen(server_fd, 3) < 0)
     {
         perror("listen");
         exit(EXIT_FAILURE);
     }
+    printf("Servidor listo...\n");
+
     while(1)
     {
         if ((new_socket = accept(server_fd, (struct sockaddr *)&address,(socklen_t*)&addrlen))<0)
