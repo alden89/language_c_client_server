@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
     int opt = 1, d, m, y;
     int addrlen = sizeof(address);
     char buffer[1024] = {0};
-    char *dow;
+    char dow[9] = {0};
     char message[100];
     char day[2], month[2], year[4];    
     char *p;
